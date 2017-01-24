@@ -1,0 +1,14 @@
+{
+  "extends": ["standard", "standard-react"],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "jsx-quotes": ["error", "prefer-double"],
+    "space-before-function-paren": ["error", {
+      "anonymous": "always",
+      "asyncArrow": "always",
+      "named": "never"
+    }]
+  }
+}

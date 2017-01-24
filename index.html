@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <title></title>
+    <style>
+    html {
+      font-family: -apple-system, Helvetica, sans-serif;
+      font-size: 10px;
+    }
+
+    body {
+      background-color: #0005;
+      color: #fff;
+      font-size: 16px;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="app-root"></div>
+
+    <script type="text/javascript">
+      const addtopage = src => {
+        const newElement = document.createElement('script')
+        newElement.src = src
+        document.body.appendChild(newElement)
+      }
+
+      if (process.env.NODE_ENV === 'production') {
+        require('./dist/main.bundle.js')
+      } else {
+        const sources = [
+          'http://localhost:8080/webpack-dev-server.js',
+          'http://localhost:8080/main.bundle.js'
+        ]
+
+        sources.forEach(source => addtopage(source))
+      }
+    </script>
+  </body>
+</html>

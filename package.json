@@ -1,0 +1,41 @@
+{
+  "name": "simon",
+  "description": "",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/blakek/simon",
+    "type": "git"
+  },
+  "author": "Blake Knight <oss.ideas@gmail.com> (http://blakek.me/)",
+  "license": "MIT",
+  "scripts": {
+    "app": "electron .",
+    "build": "NODE_ENV=production webpack -p",
+    "dev-server": "webpack-dev-server",
+    "dev": "run-p app dev-server",
+    "lint": "eslint index.js src"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-env": "^1.1.8",
+    "babel-preset-react": "^6.22.0",
+    "electron": "^1.4.14",
+    "eslint": "^3.13.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-config-standard-react": "^4.2.0",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-react": "^6.9.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "menubar": "^5.2.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
