@@ -27,7 +27,7 @@
         document.body.appendChild(newElement)
       }
 
-      if (process.env.NODE_ENV === 'production') {
+      if (typeof process === 'object' && process.env.NODE_ENV === 'production') {
         require('./dist/main.bundle.js')
       } else {
         const sources = [
