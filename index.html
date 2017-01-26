@@ -11,8 +11,6 @@
     }
 
     body {
-      background-color: #0005;
-      color: #fff;
       font-size: 16px;
     }
     </style>
@@ -27,7 +25,14 @@
         document.body.appendChild(newElement)
       }
 
-      if (typeof process === 'object' && process.env.NODE_ENV === 'production') {
+      const processExists = typeof process === 'object'
+
+      // Set darker background if not running in Electron
+      if (!processExists || !process.versions || !process.versions.electron) {
+        document.body.style.backgroundColor = '#222'
+      }
+
+      if (processExists && process.env.NODE_ENV === 'production') {
         require('./dist/main.bundle.js')
       } else {
         const sources = [
