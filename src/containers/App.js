@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { SpeechPitchSlider } from 'components/SpeechPitchSlider'
 import { SpeechRateSlider } from 'components/SpeechRateSlider'
-import { TextInput } from 'components/TextInput'
+import { TextArea } from 'components/TextArea'
 import { VoiceList } from 'components/VoiceList'
 
 const containerStyle = {
@@ -41,8 +41,9 @@ export class App extends Component {
   render() {
     return (
       <div style={containerStyle}>
-        <TextInput
+        <TextArea
           maxRows={5}
+          placeholder="Say something&hellip;"
           value={this.state.text}
           onChange={text => this.setState({ text })}
         />
