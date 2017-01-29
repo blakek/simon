@@ -7,6 +7,7 @@ export const SpeechPitchSlider = ({ onChange, value }) => (
     min={0}
     onChange={onChange}
     step={0.1}
+    title="Voice Pitch"
     value={value}
   />
 )

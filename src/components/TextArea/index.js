@@ -17,7 +17,7 @@ const getRowCount = (textValue, maxLines) => {
 const StyledTextarea = styled.textarea`
   appearance: none;
   background-color: transparent;
-  border: .2rem solid rgba(255, 255, 255, .05);
+  border: .2rem solid rgba(255, 255, 255, 0.05);
   box-sizing: border-box;
   margin-bottom: 1rem;
   padding: 2rem 2rem;
@@ -25,8 +25,13 @@ const StyledTextarea = styled.textarea`
   border-radius: .2rem;
   color: #fff;
 
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
   &:focus {
     outline: none;
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   &::-webkit-resizer {

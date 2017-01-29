@@ -7,6 +7,7 @@ export const SpeechRateSlider = ({ onChange, value }) => (
     min={0.1}
     onChange={onChange}
     step={0.1}
+    title="Speech Rate"
     value={value}
   />
 )
