@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import styled from 'styled-components'
+import { ActionContainer } from 'components/ActionContainer'
 import { Button } from 'components/Button'
 import { GroupNameInput } from 'components/GroupNameInput'
 import { SpeechPitchSlider } from 'components/SpeechPitchSlider'
@@ -53,8 +54,9 @@ export const Send = ({
       value={group}
       onChange={onGroupChanged}
     />
-
-    <Button onClick={testSpeech}>Test</Button>
+    <ActionContainer>
+      <Button onClick={testSpeech}>Test</Button>
+    </ActionContainer>
   </AppContainer>
 )
 
