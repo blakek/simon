@@ -6,9 +6,9 @@ export const Button = styled.button`
   border: 0.2rem solid ${props => props.theme.componentColor};
   border-radius: ${props => props.theme.borderRadius};
   color: ${props => props.theme.componentColor};
-  padding: 1.2rem;
+  padding: ${props => props.theme.componentPadding};
   font-size: 1em;
-  transition: all 300ms ease;
+  transition: ${props => props.theme.componentHoverTransition};
 
   &:hover {
     background-color: ${props => props.theme.componentBackgroundColor};
@@ -19,13 +19,3 @@ export const Button = styled.button`
     outline: none;
   }
 `
-
-Button.defaultProps = {
-  theme: {
-    borderRadius: '0.3rem',
-    color: '#ffffff',
-    componentBackgroundColor: 'rgba(255, 255, 255, 0.05)',
-    componentColor: 'rgba(255, 255, 255, 0.5)',
-    componentHoverColor: 'rgba(255, 255, 255, 0.8)'
-  }
-}

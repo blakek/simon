@@ -21,7 +21,7 @@ export const SliderBase = styled.input`
     height: .2rem;
     background-color: ${props => props.theme.main};
     cursor: pointer;
-    border-radius: 1.3px;
+    border-radius: .2rem;
   }
 
   &::-webkit-slider-thumb {
@@ -32,7 +32,7 @@ export const SliderBase = styled.input`
     width: 1rem;
     border-radius: 50%;
     margin-top: -.4rem;
-    transition: transform 300ms ease, opacity 300ms ease;
+    transition: ${props => props.theme.componentHoverTransition};
 
     &:hover {
       opacity: 1;
@@ -40,9 +40,3 @@ export const SliderBase = styled.input`
     }
   }
 `
-
-SliderBase.defaultProps = {
-  theme: {
-    main: 'rgba(126, 192, 238, 0.8)'
-  }
-}

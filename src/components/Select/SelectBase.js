@@ -9,7 +9,7 @@ export const SelectBase = styled.select`
   padding: ${props => props.theme.componentPadding};
   padding-right: 3rem;
   font-size: 1em;
-  transition: all 300ms ease;
+  transition: ${props => props.theme.componentHoverTransition};
 
   &:hover {
     border-color: ${props => props.theme.componentHoverColor};
@@ -19,14 +19,3 @@ export const SelectBase = styled.select`
     outline: none;
   }
 `
-
-SelectBase.defaultProps = {
-  theme: {
-    borderRadius: '0.3rem',
-    color: '#ffffff',
-    componentBackgroundColor: 'rgba(255, 255, 255, 0.05)',
-    componentColor: 'rgba(255, 255, 255, 0.5)',
-    componentHoverColor: 'rgba(255, 255, 255, 0.8)',
-    componentPadding: '.8rem'
-  }
-}

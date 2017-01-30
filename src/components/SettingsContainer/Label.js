@@ -5,9 +5,3 @@ export const Label = styled.label`
   color: ${props => props.theme.color};
   text-align: right;
 `
-
-Label.defaultProps = {
-  theme: {
-    color: '#ffffff'
-  }
-}

@@ -25,15 +25,3 @@ export const SelectContainer = styled.span`
     }
   }
 `
-
-SelectContainer.defaultProps = {
-  theme: {
-    borderRadius: '0.3rem',
-    color: '#ffffff',
-    componentBackgroundColor: 'rgba(255, 255, 255, 0.05)',
-    componentColor: 'rgba(255, 255, 255, 0.5)',
-    componentHoverColor: 'rgba(255, 255, 255, 0.8)',
-    componentHoverTransition: 'all 200ms ease',
-    componentPadding: '.8rem'
-  }
-}

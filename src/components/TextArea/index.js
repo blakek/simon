@@ -22,8 +22,9 @@ const StyledTextarea = styled.textarea`
   margin-bottom: 1rem;
   padding: 2rem 2rem;
   font-size: 1.4rem;
-  border-radius: .2rem;
-  color: #fff;
+  border-radius: ${props => props.theme.borderRadius};
+  color: ${props => props.theme.color};
+  transition: ${props => props.theme.componentHoverTransition};
 
   &:hover {
     border-color: rgba(255, 255, 255, 0.1);

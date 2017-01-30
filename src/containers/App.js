@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import { ThemeProvider } from 'styled-components'
 import { Button } from 'components/Button'
 import { SpeechPitchSlider } from 'components/SpeechPitchSlider'
 import { SpeechRateSlider } from 'components/SpeechRateSlider'
 import { TextArea } from 'components/TextArea'
 import { VoiceList } from 'components/VoiceList'
+import { defaultTheme } from 'lib/themes'
 
 const containerStyle = {
   display: 'flex',
@@ -41,31 +43,33 @@ export class App extends Component {
 
   render() {
     return (
-      <div style={containerStyle}>
-        <TextArea
-          maxRows={5}
-          placeholder="Say something&hellip;"
-          value={this.state.text}
-          onChange={text => this.setState({ text })}
-        />
+      <ThemeProvider theme={defaultTheme}>
+        <div style={containerStyle}>
+          <TextArea
+            maxRows={5}
+            placeholder="Say something&hellip;"
+            value={this.state.text}
+            onChange={text => this.setState({ text })}
+          />
 
-        <VoiceList
-          voices={this.state.voices}
-          onChange={voice => this.setState({ voice })}
-        />
+          <VoiceList
+            voices={this.state.voices}
+            onChange={voice => this.setState({ voice })}
+          />
 
-        <SpeechRateSlider
-          value={this.state.rate}
-          onChange={rate => this.setState({ rate })}
-        />
+          <SpeechRateSlider
+            value={this.state.rate}
+            onChange={rate => this.setState({ rate })}
+          />
 
-        <SpeechPitchSlider
-          value={this.state.pitch}
-          onChange={pitch => this.setState({ pitch })}
-        />
+          <SpeechPitchSlider
+            value={this.state.pitch}
+            onChange={pitch => this.setState({ pitch })}
+          />
 
-        <Button onClick={() => this.speakText()}>Test</Button>
-      </div>
+          <Button onClick={() => this.speakText()}>Test</Button>
+        </div>
+      </ThemeProvider>
     )
   }
 }
