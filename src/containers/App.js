@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button } from 'components/Button'
 import { SpeechPitchSlider } from 'components/SpeechPitchSlider'
 import { SpeechRateSlider } from 'components/SpeechRateSlider'
 import { TextArea } from 'components/TextArea'
@@ -63,7 +64,7 @@ export class App extends Component {
           onChange={pitch => this.setState({ pitch })}
         />
 
-        <button onClick={() => this.speakText()}>Test</button>
+        <Button onClick={() => this.speakText()}>Test</Button>
       </div>
     )
   }
