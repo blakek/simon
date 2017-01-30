@@ -1,16 +1,17 @@
 import React, { PropTypes } from 'react'
 import { Container, Label, Setting } from 'components/SettingsContainer'
+import { Select } from 'components/Select'
 
 export const VoiceList = ({ onChange, voices }) => (
   <Container>
     <Label>Voice</Label>
 
     <Setting>
-      <select onChange={e => { onChange(voices[e.target.value]) }}>
+      <Select onChange={e => { onChange(voices[e.target.value]) }}>
         {voices.map((voice, index) => (
           <option key={index} value={index}>{voice.name}</option>
         ))}
-      </select>
+      </Select>
     </Setting>
   </Container>
 )
