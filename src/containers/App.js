@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { defaultTheme } from 'lib/themes'
+import { Join } from 'screens/Join'
 import { Send } from 'screens/Send'
 
 export class App extends Component {
@@ -9,9 +10,11 @@ export class App extends Component {
 
     this.state = {
       group: '',
+      hasJoinedGroup: false,
       speechPitch: 1,
       speechRate: 1,
       text: '',
+      username: '',
       voice: null,
       voices: []
     }
@@ -33,17 +36,34 @@ export class App extends Component {
   }
 
   render() {
+    const sendScreen = (
+      <Send
+        onTextChanged={text => this.setState({ text })}
+        onVoiceChanged={voice => this.setState({ voice })}
+        onSpeechRateChanged={speechRate => this.setState({ speechRate })}
+        onSpeechPitchChanged={speechPitch => this.setState({ speechPitch })}
+        testSpeech={() => this.speakText()}
+        {...this.state}
+      />
+    )
+
+    const joinScreen = (
+      <Join
+        group={this.state.group}
+        username={this.state.username}
+        onGroupChanged={group => this.setState({ group })}
+        onUsernameChanged={username => this.setState({ username })}
+        onTryJoin={() => this.setState({ hasJoinedGroup: true })}
+      />
+    )
+
     return (
       <ThemeProvider theme={defaultTheme}>
-        <Send
-          onTextChanged={text => this.setState({ text })}
-          onVoiceChanged={voice => this.setState({ voice })}
-          onSpeechRateChanged={speechRate => this.setState({ speechRate })}
-          onSpeechPitchChanged={speechPitch => this.setState({ speechPitch })}
-          onGroupChanged={group => this.setState({ group })}
-          testSpeech={() => this.speakText()}
-          {...this.state}
-        />
+        {
+          this.state.hasJoinedGroup
+          ? sendScreen
+          : joinScreen
+        }
       </ThemeProvider>
     )
   }
