@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { ThemeProvider } from 'styled-components'
+import { defaultTheme } from 'lib/themes'
 import { Button } from 'components/Button'
+import { GroupNameInput } from 'components/GroupNameInput'
 import { SpeechPitchSlider } from 'components/SpeechPitchSlider'
 import { SpeechRateSlider } from 'components/SpeechRateSlider'
 import { TextArea } from 'components/TextArea'
 import { VoiceList } from 'components/VoiceList'
-import { defaultTheme } from 'lib/themes'
 
 const containerStyle = {
   display: 'flex',
@@ -18,6 +19,7 @@ export class App extends Component {
     super()
 
     this.state = {
+      group: '',
       pitch: 1,
       rate: 1,
       text: '',
@@ -65,6 +67,11 @@ export class App extends Component {
           <SpeechPitchSlider
             value={this.state.pitch}
             onChange={pitch => this.setState({ pitch })}
+          />
+
+          <GroupNameInput
+            onChange={group => this.setState({ group })}
+            value={this.state.group}
           />
 
           <Button onClick={() => this.speakText()}>Test</Button>
