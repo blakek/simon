@@ -38,7 +38,6 @@ export function part({ group, username }) {
 }
 
 export function say({ from, to, text }) {
-  debugger
   transmit({
     from,
     to,
