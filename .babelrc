@@ -1,5 +1,6 @@
 {
   "plugins": [
+    "transform-do-expressions",
     "transform-object-rest-spread"
   ],
   "presets": [
