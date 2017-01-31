@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { ThemeProvider } from 'styled-components'
+import { init as apiInit, join, say } from 'lib/api'
 import { defaultTheme } from 'lib/themes'
 import { Join } from 'screens/Join'
+import { Loading } from 'screens/Loading'
 import { Send } from 'screens/Send'
 
 export class App extends Component {
@@ -9,8 +11,10 @@ export class App extends Component {
     super()
 
     this.state = {
+      chosenRecipient: null,
       group: '',
       hasJoinedGroup: false,
+      isLoading: false,
       speechPitch: 1,
       speechRate: 1,
       text: '',
@@ -24,10 +28,15 @@ export class App extends Component {
     speechSynthesis.addEventListener('voiceschanged', () => {
       this.setState({ voices: speechSynthesis.getVoices() })
     })
+
+    apiInit({
+      onJoin: () => this.setState({ hasJoinedGroup: true }),
+      onSpeak: text => this.speakText(text)
+    })
   }
 
-  speakText() {
-    const utterance = new SpeechSynthesisUtterance(this.state.text)
+  speakText(text) {
+    const utterance = new SpeechSynthesisUtterance(text)
     utterance.pitch = this.state.speechPitch
     utterance.rate = this.state.speechRate
     utterance.voice = this.state.voice
@@ -35,14 +44,24 @@ export class App extends Component {
     speechSynthesis.speak(utterance)
   }
 
+  sendMessage() {
+    say({
+      from: { group: this.state.group, username: this.state.username },
+      to: { group: this.state.group, username: this.state.chosenRecipient },
+      text: this.state.text
+    })
+  }
+
   render() {
     const sendScreen = (
       <Send
+        onChosenRecipientChanged={chosenRecipient => this.setState({ chosenRecipient })}
         onTextChanged={text => this.setState({ text })}
         onVoiceChanged={voice => this.setState({ voice })}
+        onSay={() => this.sendMessage()}
         onSpeechRateChanged={speechRate => this.setState({ speechRate })}
         onSpeechPitchChanged={speechPitch => this.setState({ speechPitch })}
-        testSpeech={() => this.speakText()}
+        testSpeech={() => this.speakText(this.state.text)}
         {...this.state}
       />
     )
@@ -53,17 +72,17 @@ export class App extends Component {
         username={this.state.username}
         onGroupChanged={group => this.setState({ group })}
         onUsernameChanged={username => this.setState({ username })}
-        onTryJoin={() => this.setState({ hasJoinedGroup: true })}
+        onTryJoin={() => join({ group: this.state.group, username: this.state.username })}
       />
     )
 
     return (
       <ThemeProvider theme={defaultTheme}>
-        {
-          this.state.hasJoinedGroup
-          ? sendScreen
-          : joinScreen
-        }
+        {do {
+          if (this.state.isLoading) { <Loading /> }
+          else if (this.state.hasJoinedGroup) { sendScreen }
+          else joinScreen
+        }}
       </ThemeProvider>
     )
   }
