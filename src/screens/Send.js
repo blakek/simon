@@ -5,6 +5,7 @@ import { Button } from 'components/Button'
 import { SpeechPitchSlider } from 'components/SpeechPitchSlider'
 import { SpeechRateSlider } from 'components/SpeechRateSlider'
 import { TextArea } from 'components/TextArea'
+import { UsernameInput } from 'components/UsernameInput'
 import { VoiceList } from 'components/VoiceList'
 
 const AppContainer = styled.section`
@@ -14,6 +15,8 @@ const AppContainer = styled.section`
 `
 
 export const Send = ({
+  chosenRecipient,
+  onChosenRecipientChanged,
   text,
   onTextChanged,
   voices,
@@ -24,6 +27,7 @@ export const Send = ({
   onSpeechPitchChanged,
   group,
   onGroupChanged,
+  onSay,
   testSpeech
 }) => (
   <AppContainer>
@@ -49,13 +53,21 @@ export const Send = ({
       onChange={onSpeechPitchChanged}
     />
 
+    <UsernameInput
+      value={chosenRecipient}
+      onChange={onChosenRecipientChanged}
+    />
+
     <ActionContainer>
       <Button onClick={testSpeech}>Test</Button>
+      <Button onClick={onSay} primary>Send</Button>
     </ActionContainer>
   </AppContainer>
 )
 
 Send.propTypes = {
+  chosenRecipient: PropTypes.string.isRequired,
+  onChosenRecipientChanged: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
   onTextChanged: PropTypes.func.isRequired,
   voices: PropTypes.array.isRequired,
@@ -66,6 +78,7 @@ Send.propTypes = {
   onSpeechPitchChanged: PropTypes.func.isRequired,
   group: PropTypes.string.isRequired,
   onGroupChanged: PropTypes.func.isRequired,
+  onSay: PropTypes.func.isRequired,
   testSpeech: PropTypes.func.isRequired
 }
 
