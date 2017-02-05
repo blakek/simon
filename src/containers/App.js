@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { ThemeProvider } from 'styled-components'
 import { init as apiInit, join, say } from 'lib/api'
-import { defaultTheme } from 'lib/themes'
 import { Join } from 'screens/Join'
 import { Loading } from 'screens/Loading'
 import { Send } from 'screens/Send'
@@ -25,25 +23,48 @@ export class App extends Component {
   }
 
   componentWillMount() {
+    // set voice list when list is loaded
     speechSynthesis.addEventListener('voiceschanged', () => {
       this.setState({ voices: speechSynthesis.getVoices() })
     })
 
     apiInit({
-      onJoin: () => this.setState({ hasJoinedGroup: true }),
-      onSpeak: text => this.speakText(text)
+      onJoined: () => this.setState({ hasJoinedGroup: true }),
+      onSpeak: options => this.speak(options)
     })
   }
 
-  speakText(text) {
+  // Thinnest wrapper around speechSynthesis
+  speak({ pitch = 1, rate = 1, text = '', voice = null, voiceName = '' }) {
     const utterance = new SpeechSynthesisUtterance(text)
-    utterance.pitch = this.state.speechPitch
-    utterance.rate = this.state.speechRate
-    utterance.voice = this.state.voice
+
+    utterance.pitch = pitch
+    utterance.rate = rate
+
+    if (typeof voice === 'object') {
+      utterance.voice = voice
+    } else {
+      utterance.voice = this.state.voices.find(voice => voice.name === voiceName)
+    }
+
+    if (utterance.voice == null) {
+      utterance.voice = this.state.voices.find(voice => voice.default)
+    }
 
     speechSynthesis.speak(utterance)
   }
 
+  // Speak with pitch, rate, voice, and text currently set in state
+  speakTest(text) {
+    this.speak({
+      pitch: this.state.speechPitch,
+      rate: this.state.speechRate,
+      text,
+      voice: this.state.voice
+    })
+  }
+
+  // Send a message to another user
   sendMessage() {
     say({
       from: { group: this.state.group, username: this.state.username },
@@ -53,38 +74,34 @@ export class App extends Component {
   }
 
   render() {
-    const sendScreen = (
-      <Send
-        onChosenRecipientChanged={chosenRecipient => this.setState({ chosenRecipient })}
-        onTextChanged={text => this.setState({ text })}
-        onVoiceChanged={voice => this.setState({ voice })}
-        onSay={() => this.sendMessage()}
-        onSpeechRateChanged={speechRate => this.setState({ speechRate })}
-        onSpeechPitchChanged={speechPitch => this.setState({ speechPitch })}
-        testSpeech={() => this.speakText(this.state.text)}
-        {...this.state}
-      />
-    )
-
-    const joinScreen = (
-      <Join
-        group={this.state.group}
-        username={this.state.username}
-        onGroupChanged={group => this.setState({ group })}
-        onUsernameChanged={username => this.setState({ username })}
-        onTryJoin={() => join({ group: this.state.group, username: this.state.username })}
-      />
-    )
-
-    return (
-      <ThemeProvider theme={defaultTheme}>
-        {do {
-          if (this.state.isLoading) { <Loading /> }
-          else if (this.state.hasJoinedGroup) { sendScreen }
-          else joinScreen
-        }}
-      </ThemeProvider>
-    )
+    if (this.state.isLoading) {
+      return (
+        <Loading />
+      )
+    } else if (this.state.hasJoinedGroup) {
+      return (
+        <Send
+          onChosenRecipientChanged={chosenRecipient => this.setState({ chosenRecipient })}
+          onTextChanged={text => this.setState({ text })}
+          onVoiceChanged={voice => this.setState({ voice })}
+          onSay={() => this.sendMessage()}
+          onSpeechRateChanged={speechRate => this.setState({ speechRate })}
+          onSpeechPitchChanged={speechPitch => this.setState({ speechPitch })}
+          testSpeech={() => this.speakTest(this.state.text)}
+          {...this.state}
+        />
+      )
+    } else {
+      return (
+        <Join
+          group={this.state.group}
+          username={this.state.username}
+          onGroupChanged={group => this.setState({ group })}
+          onUsernameChanged={username => this.setState({ username })}
+          onTryJoin={() => join({ group: this.state.group, username: this.state.username })}
+        />
+      )
+    }
   }
 }
 

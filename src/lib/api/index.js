@@ -1,66 +1,48 @@
-const websocket = new window.WebSocket('ws://10.0.0.5:3000')
+import io from 'socket.io-client'
+const socket = io('ws://10.0.0.5:3000', { transports: ['websocket'], upgrade: false })
 
 export function init(config) {
-  return new Promise((resolve) => {
-    websocket.onopen = resolve
-    websocket.onmessage = parseMessage(config)
-    websocket.onerror = showError
+  return new Promise((resolve, reject) => {
+    socket.on('joined', config.onJoined)
+    socket.on('say', config.onSpeak)
+    socket.on('simon-error', config.onError)
+    socket.on('users', config.onUserList)
+
+    socket.on('connect', resolve)
+    socket.on('connect_error', reject)
   })
 }
 
 export function join({ group, username }) {
-  transmit({
+  socket.emit('join', {
     group,
-    username,
-    message: 'join'
+    username
   })
 }
 
-const parseMessage = ({ onJoin, onSpeak }) => ({ data }) => {
-  const transmission = JSON.parse(data)
-
-  if (transmission.message === 'say') {
-    onSpeak(transmission.text)
-  } else if (transmission.message === 'join') {
-    onJoin(transmission.message)
-  } else if (/error/.test(transmission.message)) {
-    // TODO: handle specific error messages
-    console.error(transmission.message)
-  }
+export function list({ group }) {
+  socket.emit('list')
 }
 
 export function part({ group, username }) {
-  transmit({
-    group,
+  socket.emit('part', {
     username,
-    message: 'part'
+    group
   })
 }
 
-export function say({ from, to, text }) {
-  transmit({
+export function say({ from, to, data }) {
+  socket.emit('send', {
     from,
     to,
-    text,
-    message: 'send'
+    data
   })
 }
 
-function showError(error) {
-  // TODO: handle specific error messages
-  console.error(error.data)
-}
-
-export function transmit(message) {
-  const transmission = JSON.stringify(message)
-  websocket.send(transmission)
-}
-
-export function yell(from, to, text) {
-  transmit({
+export function yell(from, to, data) {
+  socket.emit('yell', {
     from,
     to,
-    text,
-    message: 'yell'
+    data
   })
 }
