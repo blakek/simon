@@ -13,7 +13,7 @@ export const Slider = ({ max, min, onChange, step, title, value }) => (
         step={step}
         type="range"
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={e => onChange(Number(e.target.value))}
       />
     </Setting>
   </Container>
