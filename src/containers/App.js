@@ -44,7 +44,7 @@ export class App extends Component {
     utterance.pitch = pitch
     utterance.rate = rate
 
-    if (typeof voice === 'object') {
+    if (voice != null) {
       utterance.voice = voice
     } else {
       utterance.voice = this.state.voices.find(voice => voice.name === voiceName)
