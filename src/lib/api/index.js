@@ -14,10 +14,7 @@ export function init(config) {
 }
 
 export function join({ group, username }) {
-  socket.emit('join', {
-    group,
-    username
-  })
+  socket.emit('join', { group, username })
 }
 
 export function list({ group }) {
@@ -25,24 +22,13 @@ export function list({ group }) {
 }
 
 export function part({ group, username }) {
-  socket.emit('part', {
-    username,
-    group
-  })
+  socket.emit('part', { username, group })
 }
 
 export function say({ from, to, data }) {
-  socket.emit('send', {
-    from,
-    to,
-    data
-  })
+  socket.emit('send', { from, to, data })
 }
 
-export function yell(from, to, data) {
-  socket.emit('yell', {
-    from,
-    to,
-    data
-  })
+export function yell({ from, to, data }) {
+  socket.emit('yell', { from, to, data })
 }
