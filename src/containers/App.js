@@ -25,12 +25,15 @@ export class App extends Component {
   componentWillMount() {
     // set voice list when list is loaded
     speechSynthesis.addEventListener('voiceschanged', () => {
-      this.setState({ voices: speechSynthesis.getVoices() })
+      this.setState({
+        voice: speechSynthesis.getVoices().find(voice => voice.default),
+        voices: speechSynthesis.getVoices()
+      })
     })
 
     apiInit({
       onJoined: () => this.setState({ hasJoinedGroup: true }),
-      onSpeak: options => this.speak(options)
+      onSpeak: ({ data }) => this.speak(data)
     })
   }
 
@@ -69,7 +72,12 @@ export class App extends Component {
     say({
       from: { group: this.state.group, username: this.state.username },
       to: { group: this.state.group, username: this.state.chosenRecipient },
-      text: this.state.text
+      data: {
+        pitch: this.state.speechPitch,
+        rate: this.state.speechRate,
+        text: this.state.text,
+        voiceName: this.state.voice.name
+      }
     })
   }
 
