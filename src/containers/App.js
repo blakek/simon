@@ -3,6 +3,7 @@ import { init as apiInit, join, say } from 'lib/api'
 import { Join } from 'screens/Join'
 import { Loading } from 'screens/Loading'
 import { Send } from 'screens/Send'
+import json5 from 'json5'
 
 export class App extends Component {
   constructor() {
@@ -39,22 +40,41 @@ export class App extends Component {
 
   // Thinnest wrapper around speechSynthesis
   speak({ pitch = 1, rate = 1, text = '', voice = null, voiceName = '' }) {
-    const utterance = new SpeechSynthesisUtterance(text)
+    const textParts = this.splitText(pitch, rate, text, voice, voiceName)
+    textParts.forEach(p => {
+      const utterance = new SpeechSynthesisUtterance(p.text)
 
-    utterance.pitch = pitch
-    utterance.rate = rate
+      utterance.pitch = p.pitch
+      utterance.rate = p.rate
+      utterance.voice = p.voice ||
+        this.state.voices.find(voice => voice.name === p.voiceName) ||
+        this.state.voices.find(voice => voice.default)
 
-    if (voice != null) {
-      utterance.voice = voice
-    } else {
-      utterance.voice = this.state.voices.find(voice => voice.name === voiceName)
-    }
+      speechSynthesis.speak(utterance)
+    })
+  }
 
-    if (utterance.voice == null) {
-      utterance.voice = this.state.voices.find(voice => voice.default)
-    }
-
-    speechSynthesis.speak(utterance)
+  splitText(pitch = 1, rate = 1, text = '', voice = null, voiceName = '') {
+    const textParts = text.split('{{')
+    return textParts.map(t => {
+      if (t.indexOf('}}') >= 0) {
+        const parts = t.split('}}')
+        const settings = json5.parse(`{${parts[0]}}`)
+        return {
+          pitch: settings.pitch || settings.p || pitch,
+          rate: settings.rate || settings.r || rate,
+          text: parts[1],
+          voiceName: settings.voice || settings.v || voiceName
+        }
+      }
+      return {
+        pitch,
+        rate,
+        text: t,
+        voice,
+        voiceName
+      }
+    })
   }
 
   // Speak with pitch, rate, voice, and text currently set in state
