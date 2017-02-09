@@ -36,7 +36,7 @@
         document.body.style.backgroundColor = '#222'
       }
 
-      if (processExists && process.env.NODE_ENV === 'production') {
+      if (processExists) {
         require('./dist/main.bundle.js')
       } else {
         const sources = [

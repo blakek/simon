@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "app": "electron .",
-    "build": "NODE_ENV=production webpack -p",
+    "build": "NODE_ENV=production webpack",
     "dev-server": "webpack-dev-server",
     "dev": "run-p app dev-server",
     "lint": "eslint index.js src"
@@ -36,6 +36,7 @@
     "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
+    "json5": "^0.5.1",
     "menubar": "^5.2.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
