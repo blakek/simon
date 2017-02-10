@@ -36,9 +36,13 @@
         document.body.style.backgroundColor = '#222'
       }
 
-      if (processExists && process.env.NODE_ENV === 'production') {
-        require('./dist/main.bundle.js')
+      console.log('about to do work!')
+
+      if (processExists && process.env.SIMON_ENV !== 'development') {
+        console.log('requiring built bundle...')
+        require('./main.bundle.js')
       } else {
+        console.log('requiring dev sources...')
         const sources = [
           'http://localhost:8080/webpack-dev-server.js',
           'http://localhost:8080/main.bundle.js'

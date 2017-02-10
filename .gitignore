@@ -1,5 +1,6 @@
 # Compiled/built project
 dist
+app/*.bundle.js
 
 # Testing output
 .nyc_output

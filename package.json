@@ -1,8 +1,8 @@
 {
   "name": "simon",
-  "description": "",
+  "description": "📢 Say things on other people's computers",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "app/index.js",
   "repository": {
     "url": "https://github.com/blakek/simon",
     "type": "git"
@@ -11,10 +11,27 @@
   "license": "MIT",
   "scripts": {
     "app": "electron .",
-    "build": "NODE_ENV=production webpack -p",
-    "dev-server": "webpack-dev-server",
+    "build": "webpack && build",
+    "dev-server": "SIMON_ENV=development webpack-dev-server",
     "dev": "run-p app dev-server",
-    "lint": "eslint index.js src"
+    "lint": "eslint index.js src",
+    "package": "build --dir"
+  },
+  "build": {
+    "appId": "me.blakek.simonapp",
+    "category": "public.app-category.developer-tools",
+    "asar": false,
+    "files": [
+      "app/**/*",
+      "node_modules/electron-positioner/**/*",
+      "node_modules/extend/**/*",
+      "node_modules/menubar/**/*"
+    ],
+    "win": {
+      "target": [
+        "squirrel"
+      ]
+    }
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
@@ -24,6 +41,7 @@
     "babel-preset-env": "^1.1.8",
     "babel-preset-react": "^6.22.0",
     "electron": "^1.4.14",
+    "electron-builder": "^13.0.0",
     "eslint": "^3.13.1",
     "eslint-config-standard": "^6.2.1",
     "eslint-config-standard-react": "^4.2.0",
