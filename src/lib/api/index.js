@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-const socket = io('wss://simon-server-xbarmfbeuf.now.sh', { transports: ['websocket'], upgrade: false })
+const socket = io('wss://simon-server.now.sh', { transports: ['websocket'], upgrade: false })
 
 export function init(config) {
   return new Promise((resolve, reject) => {
