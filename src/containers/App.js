@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { init as apiInit, join, say } from 'lib/api'
+import { getVoices, speak } from 'lib/speech'
 import { Join } from 'screens/Join'
 import { Loading } from 'screens/Loading'
 import { Send } from 'screens/Send'
-import json5 from 'json5'
 
 export class App extends Component {
   constructor() {
@@ -24,67 +24,28 @@ export class App extends Component {
   }
 
   componentWillMount() {
-    // set voice list when list is loaded
-    speechSynthesis.addEventListener('voiceschanged', () => {
+    // set voice list
+    getVoices().then(({voice, voices}) => {
       this.setState({
-        voice: speechSynthesis.getVoices().find(voice => voice.default),
-        voices: speechSynthesis.getVoices()
+        voice,
+        voices
       })
     })
 
     apiInit({
       onJoined: () => this.setState({ hasJoinedGroup: true }),
-      onSpeak: ({ data }) => this.speak(data)
-    })
-  }
-
-  // Thinnest wrapper around speechSynthesis
-  speak({ pitch = 1, rate = 1, text = '', voice = null, voiceName = '' }) {
-    const textParts = this.splitText(pitch, rate, text, voice, voiceName)
-    textParts.forEach(p => {
-      const utterance = new SpeechSynthesisUtterance(p.text)
-
-      utterance.pitch = p.pitch
-      utterance.rate = p.rate
-      utterance.voice = p.voice ||
-        this.state.voices.find(voice => voice.name === p.voiceName) ||
-        this.state.voices.find(voice => voice.default)
-
-      speechSynthesis.speak(utterance)
-    })
-  }
-
-  splitText(pitch = 1, rate = 1, text = '', voice = null, voiceName = '') {
-    const textParts = text.split('{{')
-    return textParts.map(t => {
-      if (t.indexOf('}}') >= 0) {
-        const parts = t.split('}}')
-        const settings = json5.parse(`{${parts[0]}}`)
-        return {
-          pitch: settings.pitch || settings.p || pitch,
-          rate: settings.rate || settings.r || rate,
-          text: parts[1],
-          voiceName: settings.voice || settings.v || voiceName
-        }
-      }
-      return {
-        pitch,
-        rate,
-        text: t,
-        voice,
-        voiceName
-      }
+      onSpeak: ({ data }) => speak(data, this.state.voices)
     })
   }
 
   // Speak with pitch, rate, voice, and text currently set in state
   speakTest(text) {
-    this.speak({
+    speak({
       pitch: this.state.speechPitch,
       rate: this.state.speechRate,
       text,
       voice: this.state.voice
-    })
+    }, this.state.voices)
   }
 
   // Send a message to another user
