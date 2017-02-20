@@ -14,9 +14,15 @@
     "build": "NODE_ENV=production webpack",
     "dev-server": "webpack-dev-server",
     "dev": "run-p app dev-server",
-    "lint": "eslint index.js src"
+    "lint": "esw -f simple-detail --color src index.js",
+    "lint:watch": "npm run lint -- --watch",
+    "serve-sb": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
+    "@kadira/storybook": "^2.21.0",
+    "@kadira/storybook-addon-knobs": "^1.7.1",
     "babel-cli": "^6.22.2",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
@@ -31,7 +37,9 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-react": "^6.9.0",
     "eslint-plugin-standard": "^2.0.1",
+    "eslint-watch": "^3.0.0",
     "npm-run-all": "^4.0.1",
+    "react-storybook-decorator-background": "^1.0.5",
     "webpack": "^2.2.0",
     "webpack-dev-server": "^1.16.2"
   },
